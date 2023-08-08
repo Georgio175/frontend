@@ -96,6 +96,28 @@ h4 {
   color: #242424;
 }
 
+.service_card:hover img{
+  transform: scale(1.2);
+  cursor: pointer;
+}
+.service_card:hover .service_title{
+  text-decoration: underline;
+}
+.service_image{
+  overflow: hidden;
+  margin: 0 auto;
+}
+.service_image img{
+  width: 100%;
+  transition: 0.5s all ease-in-out;
+}
+
+/* .service_image:hover img{
+} */
+/* .service_title:hover{
+  text-decoration: underline;
+} */
+
 @media only screen and (max-width: 798px) {
   .destination-container h2 {
     font-size: 2rem;

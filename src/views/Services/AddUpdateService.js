@@ -56,7 +56,8 @@ function AddUpdateService(props) {
   const handleSave = () => {
     setIsLoading(true);
     axios
-      .post("http://localhost/SeniorBackend/create.php", formData)
+      // .post("http://localhost/SeniorBackend/create.php", formData)
+      .post("http://localhost/senior/create.php", formData)
       .then(function (response) {
         setIsLoading(false);
         const data = response.data;
@@ -129,32 +130,6 @@ function AddUpdateService(props) {
                 }}
               />
             </Grid> */}
-            <Grid item xs={12} md={6}>
-              <TextField
-                id={"comment"}
-                variant="outlined"
-                placeholder="comment...."
-                value={formData.comment}
-                multiline
-                minRows={3}
-                onChange={handleChangeInput}
-                style={{ width: "100%" }}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    "& fieldset": {
-                      borderColor: "#ff5531",
-                    },
-                    "&:hover fieldset": {
-                      borderColor: "#ff5531",
-                    },
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#ff5531",
-                    },
-                  },
-                }}
-              />
-            </Grid>
-
             <Grid item xs={4}>
               <SingleCustomAutoComplete
                 filedName="category_id"

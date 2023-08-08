@@ -34,7 +34,8 @@ function SignIn(props) {
   const handleSave = () => {
     setIsLoading(true);
     axios
-      .post("http://localhost/SeniorBackend/login.php", formData)
+      // .post("http://localhost/SeniorBackend/login.php", formData)
+      .post("http://localhost/senior/login.php", formData)
       .then(function (response) {
         setIsLoading(false);
         const data = response.data;

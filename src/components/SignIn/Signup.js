@@ -36,7 +36,8 @@ function Signup(props) {
   const handleSave = () => {
     setIsLoading(true);
     axios
-      .post("http://localhost/SeniorBackend/signup.php", formData)
+      // .post("http://localhost/SeniorBackend/signup.php", formData)
+      .post("http://localhost/senior/signup.php", formData)
       .then(function (response) {
         setIsLoading(false);
         const data = response.data;

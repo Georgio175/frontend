@@ -11,7 +11,8 @@ export default function Destination() {
   let { id } = useParams();
   const getData = () => {
     axios
-      .get("http://localhost/SeniorBackend/getServcies.php?id=" + id)
+      // .get("http://localhost/SeniorBackend/getServcies.php?id=" + id)
+      .get("http://localhost/senior/getServcies.php?id=" + id)
       .then((res) => {
         setData(res.data[0]);
       })

@@ -8,12 +8,31 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SingleCustomAutoComplete from "../../components/SingleCustomAutoComplete";
 import AddUpdateService from "./AddUpdateService";
+import ServiceCard from "./ServiceCard";
+import axios from "axios";
+
+const pricesList = [
+  {
+    id:"0_50",name:"0-50"
+  },
+  {
+    id:"50_100",name:"50-100"
+  },
+  {
+    id:"100_200",name:"100-200"
+  },
+  {
+    id:"200",name:"200+"
+  },
+];
 
 function IndexPage() {
   const [open, setOpen] = useState(false);
+  const [data, setData] = useState([]);
+  const [locationsList, setLocationsList] = useState([]);
   const is_admin = localStorage.getItem("is_admin");
   const [filterForm, setFilterForm] = useState({
     age: "",
@@ -23,6 +42,24 @@ function IndexPage() {
     comment: null,
   });
 
+  const getData = () => {
+    axios
+      // .get("http://localhost/SeniorBackend/getServcies.php")
+      .get("http://localhost/senior/getLocations.php")
+      .then((res) => {
+        setLocationsList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+      });
+  };
+  useEffect(() => {
+    if(locationsList.length == 0){
+      getData();
+    }
+  }, []);
+  
   const customOnChange = (newValueId, fieldName, newValueName) => {
     setFilterForm({
       ...filterForm,
@@ -88,16 +125,7 @@ function IndexPage() {
                 <SingleCustomAutoComplete
                   filedName="location"
                   label="Location"
-                  list={[
-                    {
-                      id: 1,
-                      name: "Beirut",
-                    },
-                    {
-                      id: 2,
-                      name: "Tripoli",
-                    },
-                  ]}
+                  list={locationsList}
                   value={filterForm.location}
                   listKey="id"
                   description="name"
@@ -108,16 +136,7 @@ function IndexPage() {
                 <SingleCustomAutoComplete
                   filedName="price"
                   label="Price"
-                  list={[
-                    {
-                      id: 1,
-                      name: "0-50",
-                    },
-                    {
-                      id: 2,
-                      name: "50-100",
-                    },
-                  ]}
+                  list={pricesList}
                   value={filterForm.price}
                   listKey="id"
                   description="name"
@@ -143,16 +162,6 @@ function IndexPage() {
                     },
                   ]}
                   value={filterForm.rate}
-                  listKey="id"
-                  description="name"
-                  customOnChange={customOnChange}
-                />
-              </div>
-              <div style={{ width: "15%" }}>
-                <SingleCustomAutoComplete
-                  filedName="comment"
-                  label="comment"
-                  value={filterForm.comment}
                   listKey="id"
                   description="name"
                   customOnChange={customOnChange}
@@ -196,8 +205,21 @@ function IndexPage() {
               </FormGroup>
             </div>
           </Grid>
-          <Grid item xs={10}>
-            test
+          <Grid item xs={9.5} style={{ marginTop: '50px' }}>
+            <Grid container spacing={3}>
+              <Grid item xs={3}>
+                <ServiceCard />
+              </Grid>
+              <Grid item xs={3}>
+                <ServiceCard />
+              </Grid>
+              <Grid item xs={3}>
+                <ServiceCard />
+              </Grid>
+              <Grid item xs={3}>
+                <ServiceCard />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </div>
