@@ -6,6 +6,8 @@ import Destination from "./views/Destination";
 
 import Home from "./views/Home";
 import Services from "./views/Services/Services";
+import Booking from "./views/Booking";
+import History from "./views/Booking";
 
 const App = () => {
   return (
@@ -15,6 +17,8 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/Services/:id" element={<Destination />} />
           <Route path="/Services" element={<Services />} />
+          <Route path="/Booking" element={<Booking />} />
+          <Route path="/History" element={<History />} />
         </Routes>
       </BrowserRouter>
     </div>

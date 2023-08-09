@@ -89,6 +89,32 @@ function Navbar() {
                 services
               </div>
             </li>
+
+            <li className="nav-item">
+              {/* <Link
+                to="/services"
+                className="nav-links"
+                onClick={closeMobileMenu}
+              >
+                Services
+              </Link> */}
+              <div className="nav-links" onClick={() => navigate("/Booking")}>
+                booking
+              </div>
+            </li>
+            <li className="nav-item">
+              {/* <Link
+                to="/services"
+                className="nav-links"
+                onClick={closeMobileMenu}
+              >
+                Services
+              </Link> */}
+              <div className="nav-links" onClick={() => navigate("/History")}>
+                history
+              </div>
+            </li>
+
             <li className="nav-item">
               {/* <Link
                 to="/sign-up"

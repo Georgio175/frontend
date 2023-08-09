@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 // import Footer from '../Footer';
 import Footer from "../components/Footer/Footer";
+import Navbar from "../components/Navbar/Navbar";
 import Image1 from "../images/akoura.jpg";
 import { Height } from "@mui/icons-material";
 import { useParams } from "react-router-dom";
+import { BiSolidCategoryAlt } from "react-icons/bi";
+import { BiMoney } from "react-icons/bi";
+import { BiSolidMapPin } from "react-icons/bi";
 import axios from "axios";
 
 export default function Destination() {
@@ -26,6 +30,7 @@ export default function Destination() {
   }, []);
   return (
     <>
+      <Navbar />
       <div className="destination"></div>
 
       <div className="destination-container">
@@ -35,14 +40,18 @@ export default function Destination() {
 
           <h3>Experience</h3>
           <h4>Highlights</h4>
-          <ul>
-            <li>Explore the Maruaga Cave complex in the middle of Akoura </li>
-            <li>
-              Swim in natural pools and refreshing rapids on this amazing tour{" "}
-            </li>
-            <li>Enjoy an easy hike through the stunning rainforest </li>
-            <li>Visit the Cave and bathe in the beautiful waterfall </li>
-          </ul>
+          <div>
+            <BiSolidCategoryAlt
+              size={"40px"}
+              style={{ marginBottom: "25px" }}
+            />
+          </div>
+          <div>
+            <BiMoney size={"40px"} style={{ marginBottom: "25px" }} />
+          </div>
+          <div>
+            <BiSolidMapPin size={"40px"} style={{ marginBottom: "25px" }} />
+          </div>
           <h4>Full description</h4>
           <p>
             Explore the paradise on a full-day tour from Akoura. Swim in a

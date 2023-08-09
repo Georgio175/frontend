@@ -12,20 +12,25 @@ import Image8 from "../../images/serjbel.jpg";
 import "./Cards.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { CircularProgress } from "@mui/material";
 
 function Cards() {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState([]);
   const navigate = useNavigate();
   const getData = () => {
+    setIsLoading(true);
     axios
       // .get("http://localhost/SeniorBackend/getServcies.php")
       .get("http://localhost/senior/getServcies.php")
       .then((res) => {
         setData(res.data);
+        setIsLoading(false);
       })
       .catch((err) => {
         console.log(err);
         alert(err);
+        setIsLoading(false);
       });
   };
   useEffect(() => {
@@ -37,28 +42,40 @@ function Cards() {
       <div className="cards__container">
         <div className="cards__wrapper">
           <ul className="cards__items">
-            {data?.slice(0, 2).map((e) => (
-              <CardItem
-                key={e.id}
-                src={Image1}
-                text={e.short_description}
-                id={e.id}
-                label={e.name}
-                onClick={() => navigate(`/Services/${e.id}`)}
-              />
-            ))}
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              data
+                ?.slice(0, 2)
+                .map((e) => (
+                  <CardItem
+                    key={e.id}
+                    src={Image1}
+                    text={e.short_description}
+                    id={e.id}
+                    label={e.name}
+                    onClick={() => navigate(`/Services/${e.id}`)}
+                  />
+                ))
+            )}
           </ul>
           <ul className="cards__items">
-            {data?.slice(2).map((e) => (
-              <CardItem
-                key={e.id}
-                src={Image2}
-                text={e.full_description}
-                id={e.id}
-                label={e.name}
-                onClick={() => navigate(`/Services/${e.id}`)}
-              />
-            ))}
+            {isLoading ? (
+              <CircularProgress />
+            ) : (
+              data
+                ?.slice(2)
+                .map((e) => (
+                  <CardItem
+                    key={e.id}
+                    src={Image2}
+                    text={e.full_description}
+                    id={e.id}
+                    label={e.name}
+                    onClick={() => navigate(`/Services/${e.id}`)}
+                  />
+                ))
+            )}
           </ul>
         </div>
       </div>
