@@ -6,14 +6,19 @@ import {
   InputAdornment,
   Grid,
   DialogActions,
+  FormGroup,
+  FormControlLabel,
 } from "@mui/material";
 import { AiFillMail, AiFillUnlock } from "react-icons/ai";
+import { BiDollar } from "react-icons/bi";
 import { styled } from "@mui/material/styles";
 import axios from "axios";
 import SingleCustomAutoComplete from "../../components/SingleCustomAutoComplete";
+import InLineCustomCheckbox from "../../components/CustomCheckbox";
 
 function AddUpdateService(props) {
   const [isLoading, setIsLoading] = useState(false);
+  const [locationsList, setLocationsList] = useState([]);
   const [formData, setFormData] = useState({
     id: -1,
     name: "",
@@ -21,6 +26,8 @@ function AddUpdateService(props) {
     location: null,
     short_description: "",
     full_description: "",
+    comment: "",
+    comment: "",
     comment: "",
   });
 
@@ -36,17 +43,41 @@ function AddUpdateService(props) {
     });
   };
 
+  const getData = () => {
+    axios
+      // .get("http://localhost/SeniorBackend/getServcies.php")
+      .get("http://localhost/senior/getLocations.php")
+      .then((res) => {
+        setLocationsList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+      });
+  };
+
   useEffect(() => {
+    if (locationsList.length == 0) {
+      getData();
+    }
     resetForm();
   }, []);
 
-  const handleChangeInput = (event) => {
-    const { id, type, value } = event.target;
-    setFormData({
-      ...formData,
-      [id]: value,
-    });
-  };
+  const handleChangeInput = (e) => {
+    const { id, name, value, checked, type } = e.target;
+    if (type == "checkbox") {
+      setFormData({
+        ...formData,
+        [id]: checked,
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [id]: value,
+      });
+    }
+  }
+
   const customOnChange = (newValueId, fieldName, newValueName) => {
     setFormData({
       ...formData,
@@ -159,20 +190,7 @@ function AddUpdateService(props) {
               <SingleCustomAutoComplete
                 filedName="location"
                 label="Location"
-                list={[
-                  {
-                    id: 1,
-                    name: "Beirut",
-                  },
-                  {
-                    id: 2,
-                    name: "Tripoli",
-                  },
-                  {
-                    id: 3,
-                    name: "zgharta",
-                  },
-                ]}
+                list={locationsList}
                 value={formData.location}
                 listKey="id"
                 description="name"
@@ -228,6 +246,47 @@ function AddUpdateService(props) {
                   },
                 }}
               />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <TextField
+                id={"price"}
+                variant="outlined"
+                placeholder="Price"
+                value={formData.price}
+                onChange={handleChangeInput}
+                style={{ width: "100%" }}
+                type="number"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <BiDollar />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ff5531",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#ff5531",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#ff5531",
+                    },
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <div style={{ width: '15%' }}>
+                <InLineCustomCheckbox
+                  label={"Is Booked"}
+                  checked={formData.is_booked}
+                  id={"is_booked"}
+                  onClick={handleChangeInput}
+                />
+              </div>
             </Grid>
           </Grid>
         </div>
