@@ -7,7 +7,7 @@ import Destination from "./views/Destination";
 import Home from "./views/Home";
 import Services from "./views/Services/Services";
 import Booking from "./views/Booking";
-import History from "./views/Booking";
+import History from "./views/History";
 
 const App = () => {
   return (

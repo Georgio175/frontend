@@ -43,7 +43,8 @@ function SignIn(props) {
           alert(data.message);
         } else {
           alert("loged in");
-          localStorage.setItem("is_admin", 1);
+          localStorage.setItem("is_admin", response.data.user.is_admin);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
           props.onClose();
           window.location.reload();
         }

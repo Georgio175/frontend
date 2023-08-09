@@ -13,6 +13,7 @@ function Navbar() {
   const [openSignUp, setOpenSignUp] = useState(false);
   const [button, setButton] = useState(true);
   const navigate = useNavigate();
+  const is_admin = localStorage.getItem("is_admin");
 
   const handleClick = () => setClick(!click);
   const closeMobileMenu = () => setClick(false);
@@ -70,59 +71,31 @@ function Navbar() {
 
           <ul className={click ? "nav-menu active" : "nav-menu"}>
             <li className="nav-item">
-              {/* <Link to="/" className="nav-links" onClick={closeMobileMenu}>
-                Home
-              </Link> */}
               <div className="nav-links" onClick={() => navigate("/")}>
                 home
               </div>
             </li>
             <li className="nav-item">
-              {/* <Link
-                to="/services"
-                className="nav-links"
-                onClick={closeMobileMenu}
-              >
-                Services
-              </Link> */}
               <div className="nav-links" onClick={() => navigate("/Services")}>
                 services
               </div>
             </li>
-
+            {
+              is_admin == 1 ? (
+                <li className="nav-item">
+                  <div className="nav-links" onClick={() => navigate("/Booking")}>
+                    booking
+                  </div>
+                </li>
+              )
+                :
+                <li className="nav-item">
+                  <div className="nav-links" onClick={() => navigate("/History")}>
+                    history
+                  </div>
+                </li>
+            }
             <li className="nav-item">
-              {/* <Link
-                to="/services"
-                className="nav-links"
-                onClick={closeMobileMenu}
-              >
-                Services
-              </Link> */}
-              <div className="nav-links" onClick={() => navigate("/Booking")}>
-                booking
-              </div>
-            </li>
-            <li className="nav-item">
-              {/* <Link
-                to="/services"
-                className="nav-links"
-                onClick={closeMobileMenu}
-              >
-                Services
-              </Link> */}
-              <div className="nav-links" onClick={() => navigate("/History")}>
-                history
-              </div>
-            </li>
-
-            <li className="nav-item">
-              {/* <Link
-                to="/sign-up"
-                className="nav-links-mobile"
-                onClick={closeMobileMenu}
-              >
-                Sign up
-              </Link> */}
               <div className="nav-links-mobile">Login</div>
             </li>
           </ul>

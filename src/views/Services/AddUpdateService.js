@@ -26,9 +26,14 @@ function AddUpdateService(props) {
     location: null,
     short_description: "",
     full_description: "",
-    comment: "",
-    comment: "",
-    comment: "",
+    price: "",
+    is_booked: false,
+    phone: false,
+    email: false,
+    from_date: false,
+    to_date: false,
+    profile_image: '',
+    cover_image: '',
   });
 
   const resetForm = () => {
@@ -40,6 +45,13 @@ function AddUpdateService(props) {
       short_description: "",
       full_description: "",
       price: "",
+      is_booked: false,
+      phone: false,
+      email: false,
+      from_date: false,
+      to_date: false,
+      profile_image: '',
+      cover_image: '',
     });
   };
 
@@ -61,7 +73,7 @@ function AddUpdateService(props) {
       getData();
     }
     resetForm();
-  }, []);
+  }, [props.open]);
 
   const handleChangeInput = (e) => {
     const { id, name, value, checked, type } = e.target;
@@ -84,25 +96,64 @@ function AddUpdateService(props) {
       [fieldName]: newValueId,
     });
   };
-  const handleSave = () => {
-    setIsLoading(true);
-    axios
-      // .post("http://localhost/SeniorBackend/create.php", formData)
-      .post("http://localhost/senior/create.php", formData)
-      .then(function (response) {
-        setIsLoading(false);
-        const data = response.data;
-        if (data.status === "error") {
-          alert(data.message);
-        } else {
-          alert("Created Successfully");
-          props.onClose();
-        }
-      })
-      .catch(function (err) {
-        console.log(err);
-        setIsLoading(false);
+
+  const handleChangeFile = (e) => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      // setFile(file);
+      setFormData({
+        ...formData,
+        profile_image: file,
       });
+    };
+  };
+
+  const handleChangeFileCover = (e) => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      // setFile(file);
+      setFormData({
+        ...formData,
+        cover_image: file,
+      });
+    };
+  };
+
+  const handleSave = () => {
+    if (formData.profile_image && formData.cover_image) {
+      const formDataObj = new FormData();
+      for (const [key, value] of Object.entries(formData)) {
+        if (value && value !== "" && value !== null) {
+          formDataObj.append(key, value);
+        }
+      }
+      setIsLoading(true);
+      axios
+        // .post("http://localhost/SeniorBackend/create.php", formData)
+        .post("http://localhost/senior/create.php", formData)
+        .then(function (response) {
+          setIsLoading(false);
+          const data = response.data;
+          if (data.status === "error") {
+            alert(data.message);
+          } else {
+            alert("Created Successfully");
+            props.onClose();
+          }
+        })
+        .catch(function (err) {
+          console.log(err);
+          setIsLoading(false);
+        });
+    } else {
+      alert("Please Fill both  an profile and Cover Images");
+    }
   };
   return (
     <>
@@ -167,15 +218,15 @@ function AddUpdateService(props) {
                 label="Category"
                 list={[
                   {
-                    id: 1,
+                    id: "Food",
                     name: "Food",
                   },
                   {
-                    id: 2,
+                    id: "Activity",
                     name: "Activity",
                   },
                   {
-                    id: 3,
+                    id: "Places",
                     name: "Places",
                   },
                 ]}
@@ -278,6 +329,52 @@ function AddUpdateService(props) {
                 }}
               />
             </Grid>
+            <Grid item xs={12} md={4}>
+              <TextField
+                id={"profile_image"}
+                variant="outlined"
+                placeholder="Profile Image Link"
+                value={formData.profile_image}
+                onChange={handleChangeInput}
+                style={{ width: "100%" }}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ff5531",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#ff5531",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#ff5531",
+                    },
+                  },
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <TextField
+                id={"cover_image"}
+                variant="outlined"
+                placeholder="Cover Image Link"
+                value={formData.cover_image}
+                onChange={handleChangeInput}
+                style={{ width: "100%" }}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& fieldset": {
+                      borderColor: "#ff5531",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: "#ff5531",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#ff5531",
+                    },
+                  },
+                }}
+              />
+            </Grid>
             <Grid item xs={12}>
               <div style={{ width: '15%' }}>
                 <InLineCustomCheckbox
@@ -288,6 +385,56 @@ function AddUpdateService(props) {
                 />
               </div>
             </Grid>
+            {
+              formData.is_booked == true ?
+                <>
+                  <Grid item xs={6}>
+                    <InLineCustomCheckbox
+                      label={"Phone"}
+                      checked={formData.phone}
+                      id={"phone"}
+                      onClick={handleChangeInput}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <InLineCustomCheckbox
+                      label={"Email"}
+                      checked={formData.email}
+                      id={"email"}
+                      onClick={handleChangeInput}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <InLineCustomCheckbox
+                      label={"From Date"}
+                      checked={formData.from_date}
+                      id={"from_date"}
+                      onClick={handleChangeInput}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <InLineCustomCheckbox
+                      label={"To Date"}
+                      checked={formData.to_date}
+                      id={"to_date"}
+                      onClick={handleChangeInput}
+                    />
+                  </Grid>
+                </>
+                : null
+            }
+            {/* <Grid item xs={12}>
+              <label style={{marginRight:'20px'}}>
+                Upload Profile Image
+              </label>
+              <input type="file" onChange={handleChangeFile} />
+            </Grid>
+            <Grid item xs={12}>
+              <label style={{marginRight:'20px'}}>
+                Upload Cover Image
+              </label>
+              <input type="file" onChange={handleChangeFileCover} />
+            </Grid> */}
           </Grid>
         </div>
         <DialogActions>

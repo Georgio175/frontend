@@ -19,7 +19,7 @@ function HeroSection() {
       <h1>ADVENTURE AWAITS</h1>
       <p>What are you waiting for?</p>
 
-      <form className="search">
+      {/* <form className="search">
         <div className="search-container">
           <label>Where are you going?</label>
           <input id="location" type="text" placeholder="Search your location" />
@@ -39,7 +39,7 @@ function HeroSection() {
             Explore
           </button>
         </div>
-      </form>
+      </form> */}
     </div>
   );
 }

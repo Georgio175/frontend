@@ -16,16 +16,16 @@ import axios from "axios";
 
 const pricesList = [
   {
-    id:"0_50",name:"0-50"
+    id: "0_50", name: "0-50"
   },
   {
-    id:"50_100",name:"50-100"
+    id: "50_100", name: "50-100"
   },
   {
-    id:"100_200",name:"100-200"
+    id: "100_200", name: "100-200"
   },
   {
-    id:"200",name:"200+"
+    id: "200", name: "200+"
   },
 ];
 
@@ -39,10 +39,10 @@ function IndexPage() {
     location: null,
     price: null,
     rate: null,
-    comment: null,
+    category: '',
   });
 
-  const getData = () => {
+  const getLocations = () => {
     axios
       // .get("http://localhost/SeniorBackend/getServcies.php")
       .get("http://localhost/senior/getLocations.php")
@@ -55,11 +55,35 @@ function IndexPage() {
       });
   };
   useEffect(() => {
-    if(locationsList.length == 0){
-      getData();
+    if (locationsList.length == 0) {
+      getLocations();
     }
   }, []);
-  
+
+  const getData = () => {
+    axios
+      // .get("http://localhost/SeniorBackend/getServcies.php")
+      .get("http://localhost/senior/getServcies.php", {
+        params: {
+          location: filterForm.location > 0 ? filterForm.location : null,
+          price: filterForm.price  > 0 ? filterForm.price: null ,
+          category: filterForm.category != '' ? filterForm.category : null,
+        }
+      })
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+      });
+  };
+  useEffect(() => {
+    // if (data.length == 0) {
+    getData();
+    // }
+  }, [filterForm]);
+
   const customOnChange = (newValueId, fieldName, newValueName) => {
     setFilterForm({
       ...filterForm,
@@ -73,7 +97,19 @@ function IndexPage() {
   const handleClose = () => {
     setOpen(false);
   };
-
+  const handleCheckboxChange = (event, option) => {
+    if (event.target.checked) {
+      setFilterForm({
+        ...filterForm,
+        category: option,
+      });
+    } else {
+      setFilterForm({
+        ...filterForm,
+        category: '',
+      });
+    }
+  };
   return (
     <>
       <div style={{ minHeight: "100vh" }}>
@@ -104,8 +140,8 @@ function IndexPage() {
           </Grid>
           <Grid item xs={10} style={{ height: "50px", marginTop: "30px" }}>
             <div style={{ display: "flex" }}>
-              <div style={{ width: "30%" }}>
-                <FormControl style={{ width: "100%" }}>
+              <div style={{ width: "42%" }}>
+                {/* <FormControl style={{ width: "100%" }}>
                   <TextField
                     id="search"
                     label=""
@@ -113,11 +149,11 @@ function IndexPage() {
                     variant="standard"
                     style={{ width: "100%" }}
                   />
-                </FormControl>
+                </FormControl> */}
               </div>
               <div
                 style={{
-                  width: "15%",
+                  width: "25%",
                   marginRight: "20px",
                   marginLeft: "20px",
                 }}
@@ -132,7 +168,7 @@ function IndexPage() {
                   customOnChange={customOnChange}
                 />
               </div>
-              <div style={{ width: "15%", marginRight: "20px" }}>
+              <div style={{ width: "25%", marginRight: "20px" }}>
                 <SingleCustomAutoComplete
                   filedName="price"
                   label="Price"
@@ -143,7 +179,7 @@ function IndexPage() {
                   customOnChange={customOnChange}
                 />
               </div>
-              <div style={{ width: "15%" }}>
+              {/* <div style={{ width: "15%" }}>
                 <SingleCustomAutoComplete
                   filedName="rate"
                   label="Rate"
@@ -166,7 +202,7 @@ function IndexPage() {
                   description="name"
                   customOnChange={customOnChange}
                 />
-              </div>
+              </div> */}
             </div>
           </Grid>
           <Grid item xs={2}>
@@ -199,26 +235,27 @@ function IndexPage() {
                   justifyContent: "left",
                 }}
               >
-                <FormControlLabel control={<Checkbox />} label="Food" />
-                <FormControlLabel control={<Checkbox />} label="Activity" />
-                <FormControlLabel control={<Checkbox />} label="Places" />
+                <FormControlLabel control={<Checkbox style={{ color: "#ff5531" }}
+                  checked={filterForm.category === 'Food'} onChange={(e) => handleCheckboxChange(e, 'Food')} />}
+                  label="Food" />
+                <FormControlLabel control={<Checkbox style={{ color: "#ff5531" }}
+                  checked={filterForm.category === 'Activity'} onChange={(e) => handleCheckboxChange(e, 'Activity')} />}
+                  label="Activity" />
+                <FormControlLabel control={<Checkbox style={{ color: "#ff5531" }}
+                  checked={filterForm.category === 'Places'} onChange={(e) => handleCheckboxChange(e, 'Places')} />}
+                  label="Places" />
               </FormGroup>
             </div>
           </Grid>
           <Grid item xs={9.5} style={{ marginTop: '50px' }}>
             <Grid container spacing={3}>
-              <Grid item xs={3}>
-                <ServiceCard />
-              </Grid>
-              <Grid item xs={3}>
-                <ServiceCard />
-              </Grid>
-              <Grid item xs={3}>
-                <ServiceCard />
-              </Grid>
-              <Grid item xs={3}>
-                <ServiceCard />
-              </Grid>
+              {
+                data.map((e) => (
+                  <Grid item xs={3}>
+                    <ServiceCard data={e} />
+                  </Grid>
+                ))
+              }
             </Grid>
           </Grid>
         </Grid>

@@ -2,27 +2,51 @@ import { CircularProgress } from "@mui/material";
 import MUIDataTable from "mui-datatables";
 import Navbar from "../components/Navbar/Navbar";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Booking = () => {
-  const [isLoading, setIsLoading] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
+
+  const getData = () => {
+    setIsLoading(true);
+    axios
+      // .get("http://localhost/SeniorBackend/getServcies.php")
+      .get("http://localhost/senior/getBooking.php", {
+        params: {
+        }
+      })
+      .then((res) => {
+        setData(res.data);
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err);
+        setIsLoading(false);
+      });
+  };
+  useEffect(() => {
+    getData();
+  }, []);
+
   const columns = [
     {
       name: "id",
       label: "ID",
     },
     {
-      name: "name",
-      label: "Name",
+      name: "service_name",
+      label: "Service Name",
     },
     {
-      name: "cluster_name",
-      label: "Cluster Name",
+      name: "username",
+      label: "User Name",
     },
     {
-      name: "station_name",
-      label: "Station",
+      name: "from_date",
+      label: "Date",
     },
   ];
 

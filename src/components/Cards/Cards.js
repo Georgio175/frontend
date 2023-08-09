@@ -50,7 +50,7 @@ function Cards() {
                 .map((e) => (
                   <CardItem
                     key={e.id}
-                    src={Image1}
+                    src={e.profile_image_link}
                     text={e.short_description}
                     id={e.id}
                     label={e.name}
@@ -68,8 +68,8 @@ function Cards() {
                 .map((e) => (
                   <CardItem
                     key={e.id}
-                    src={Image2}
-                    text={e.full_description}
+                    src={e.profile_image_link}
+                    text={e.short_description}
                     id={e.id}
                     label={e.name}
                     onClick={() => navigate(`/Services/${e.id}`)}
